@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-FirebaseDatabase database = FirebaseDatabase.instance;
-
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
 
@@ -13,6 +11,30 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  late DatabaseReference _databaseReference;
+  double? pH;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeFirebase();
+    _listenTopH();
+  }
+
+  Future<void> _initializeFirebase() async {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    _databaseReference = FirebaseDatabase.instance.reference().child('pH');
+  }
+
+  void _listenTopH() {
+    _databaseReference.onValue.listen((event) {
+      final data = event.snapshot.value as double?;
+      setState(() {
+        pH = data;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +144,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: BoxItem(
                     icon: Icons.opacity,
                     title: 'pH Level',
-                    value: '--',
+                    value: pH != null ? pH!.toStringAsFixed(2) : '--',
                   ),
                 ),
               ],
