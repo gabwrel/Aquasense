@@ -11,7 +11,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  late DatabaseReference _databaseReference;
+  DatabaseReference? _databaseReference;
   double? pH;
 
   @override
@@ -26,8 +26,9 @@ class _DashboardPageState extends State<DashboardPage> {
     _databaseReference = FirebaseDatabase.instance.reference().child('pH');
   }
 
+
   void _listenTopH() {
-    _databaseReference.onValue.listen((event) {
+    _databaseReference?.onValue.listen((event) {
       final data = event.snapshot.value as double?;
       setState(() {
         pH = data;
@@ -144,7 +145,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: BoxItem(
                     icon: Icons.opacity,
                     title: 'pH Level',
-                    value: pH != null ? pH!.toStringAsFixed(2) : '--',
+                    value: pH != null ? pH!.toStringAsFixed(2) : '$pH',
                   ),
                 ),
               ],
