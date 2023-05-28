@@ -1,55 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class DashboardPage extends StatelessWidget {
-  final List<BoxItemData> boxItems = [
-    BoxItemData(
-      icon: Icons.opacity,
-      title: 'Water Level',
-    ),
-    BoxItemData(
-      icon: Icons.waves,
-      title: 'Water Turbidity',
-    ),
-    BoxItemData(
-      icon: Icons.show_chart,
-      title: 'pH Levels',
-    ),
-    BoxItemData(
-      icon: Icons.thermostat_outlined,
-      title: 'Temperature',
-    ),
-  ];
+FirebaseDatabase database = FirebaseDatabase.instance;
 
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  _DashboardPageState createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            // TODO: Implement navigation drawer functionality
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
           },
         ),
         flexibleSpace: Align(
           alignment: Alignment.center,
-          child: Image.asset(
-            'assets/images/logo2.png',
-            height: 80,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Image.asset(
+              'assets/images/logo2.png',
+              height: 80,
+            ),
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () {
               // TODO: Implement refresh functionality
             },
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Aquasense',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                // TODO: Implement Home navigation
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('User'),
+              onTap: () {
+                // TODO: Implement User navigation
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About Page'),
+              onTap: () {
+                // TODO: Implement About Page navigation
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                // TODO: Implement Logout functionality
+              },
+            ),
+          ],
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'DASHBOARD',
@@ -68,23 +115,98 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 1.2, // Adjust the aspect ratio as desired
-                children: boxItems.map((boxItem) {
-                  return FractionallySizedBox(
-                    widthFactor: 0.9, // Adjust the width factor as desired
-                    child: BoxItem(
-                      icon: boxItem.icon,
-                      title: boxItem.title,
-                      value:
-                          '--', // Placeholder value, replace with actual data
-                    ),
-                  );
-                }).toList(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.opacity,
+                    title: 'pH Level',
+                    value: '--',
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.thermostat_outlined,
+                    title: 'Temperature',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.waves_outlined,
+                    title: 'Water Level',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Environment Controls',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
               ),
             ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.lightbulb,
+                    title: 'Lighting',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.restaurant,
+                    title: 'Feeding',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Filtration System',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.whatshot,
+                    title: 'Heater',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: BoxItem(
+                    icon: Icons.lightbulb,
+                    title: 'UV Lamp',
+                    value: '--', // Placeholder value, replace with actual data
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
           ],
         ),
       ),
@@ -108,37 +230,34 @@ class BoxItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(icon, size: 24),
-            SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    value,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 2),
-            Text(
-              value,
-              style: TextStyle(fontSize: 12),
             ),
           ],
         ),
       ),
     );
   }
-}
-
-class BoxItemData {
-  final IconData icon;
-  final String title;
-
-  BoxItemData({
-    required this.icon,
-    required this.title,
-  });
 }

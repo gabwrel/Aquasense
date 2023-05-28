@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:aquasense/dashboard_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'dashboard_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -9,16 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Your App',
+      title: 'Aquasense App',
       theme: ThemeData(
-        primaryColor: Colors.white, // Set the primary color to white
-        appBarTheme: AppBarTheme(
-          color: Colors.white, // Set the AppBar color to white
-          iconTheme:
-              IconThemeData(color: Colors.blue), // Set the icon color to black
-        ),
+        primarySwatch: Colors.blue,
       ),
-      home: DashboardPage(), // Set the DashboardPage as the initial screen
+      home: DashboardPage(),
     );
   }
 }

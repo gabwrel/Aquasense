@@ -30,6 +30,13 @@
             {
               "client_id": "956076657726-h37n5fq9t5ha588dr9qe7kb6mruulk4d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "956076657726-67ajltiqloghk5vspvrtat3q167u5g65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aquasense.RunnerTests"
+              }
             }
           ]
         }
